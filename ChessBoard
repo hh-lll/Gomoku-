@@ -1,0 +1,104 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class ChessBoard extends JFrame {
+    JFrame j = new JFrame();
+    private Panel toolbar;//工具条面板
+    private Button startButton;//设置开始按钮
+    private Button backButton;//设置悔棋按钮
+    private Button aboutUsButton;//设置退出按钮
+    private Button pVSp;
+    private Button pVSc;
+    private DrawBoard drawBoard;
+    public ChessBoard() {
+        //Frame标题
+        setTitle("极简五子棋");
+        MyItemListener lis = new MyItemListener();//初始化按钮事件监听器内部类
+        toolbar = new Panel();//工具面板栏实例化
+        startButton = new Button("restart");
+        backButton = new Button("regret");
+        aboutUsButton = new Button("about us");
+        pVSp = new Button("People vs people");
+        pVSc = new Button("People vs computer");//按钮初始化
+        Font f=new Font("宋体",Font.BOLD,30);
+        startButton.setFont(f);
+        backButton.setFont(f);
+        aboutUsButton.setFont(f);
+        pVSc.setFont(f);
+        pVSp.setFont(f);
+        toolbar.setLayout(new FlowLayout(FlowLayout.LEFT));//将工具面板按钮用FlowLayout布局
+        toolbar.add(backButton);
+        toolbar.add(startButton);
+        toolbar.add(aboutUsButton);//将按钮添加到工具面板上
+        startButton.addActionListener(lis);
+        backButton.addActionListener(lis);
+        aboutUsButton.addActionListener(lis);
+        pVSp.addActionListener(lis);
+        pVSc.addActionListener(lis);//将按钮事件注册监听事件
+        add(toolbar, BorderLayout.NORTH);//将工具面板布局到界面南方也就是下面
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//设置界面关闭事件
+        pack();//自适应大小
+    }
+    private class MyItemListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            Object obj = e.getSource();//获取事件源
+            if (obj == startButton) {
+                System.out.println("重新开始...");//重新开始
+                //JFiveFrame.this内部类引用外部类
+                drawBoard.restartGame();
+            } else if (obj == aboutUsButton) {
+                String mString = String.format("我们的理念就是极简！！！");
+                String title = "关于我们";
+                JOptionPane.showMessageDialog(null, mString, title, 1);
+            } else if (obj == backButton) {
+                System.out.println("悔棋...");//悔棋
+                drawBoard.goback();
+            }
+        }
+
+    }
+    private void  run(int n) {
+        if(n == 1){
+	        setDrawBoard(
+	                DrawBoardRR.getInstance());
+	        displayBoard(drawBoard);
+        }else if(n == 2){
+            setDrawBoard(
+                    DrawBoardRJ.getInstance());
+            displayBoard(drawBoard);
+        }
+
+    }
+
+        public void setDrawBoard(DrawBoard newdrawBoard){
+        drawBoard = newdrawBoard;
+    }
+    public static void main(String[] args) {
+    	int n;
+        ChessBoard m = new ChessBoard();
+        m.setSize(1000, 1000);
+        n = m.setN();
+        m.run(n);
+        m.setVisible(true);
+    }
+    private void displayBoard(DrawBoard drawBoard) {
+        if(drawBoard == DrawBoardRR.getInstance()){
+            add(DrawBoardRR.getInstance());
+        }
+        else{
+            add(DrawBoardRJ.getInstance());//将面板对象添加到窗体上
+        }
+    }
+    public int setN() {
+        String nString = JOptionPane.showInputDialog(
+          "欢迎来到极简五子棋！\n请输入一个整数，1-人人模式，2-人机模式");
+     
+        // Convert string to int
+        int n = Integer.parseInt(nString);
+     
+        return n;
+      }
+
+}
