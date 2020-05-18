@@ -1,0 +1,174 @@
+import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
+public class DrawBoardRJ extends JPanel implements MouseListener, DrawBoard {
+    private int width;
+    private int height;
+    boolean change = true;
+    private ChessSet chessSet = new ChessSet();
+    private static DrawBoardRJ instance;  
+    private DrawBoardRJ () {
+        this.width = 780;
+        this.height = 780;
+        addMouseListener(this);
+        Chess blackfirst = new Chess(true, 420, 420);
+        chessSet.addChess(chessSet.getChessSet(), blackfirst);
+    }
+	  
+    public static DrawBoardRJ getInstance() {  
+    if (instance == null) {  
+        instance = new DrawBoardRJ();  
+    }  
+    return instance;  
+    }
+
+    public void paintComponent(Graphics g) {
+    	g.setColor(Color.GRAY);
+    	g.fillRect(0,0,840,840);
+        int a = 0;
+        for (int i = 0; i < height / 60; i++) {
+            g.setColor(Color.BLACK);
+            g.drawLine(60, 60 + 60 * i, width, 60 + 60 * i);
+            g.drawLine(60 + 60 * i, 60, 60 + 60 * i, width);
+            a = i;
+        }
+        a = (a - 4) / 2;
+        g.fillOval(a*60-10, a*60-10, 20, 20);
+        g.fillOval((a+6)*60-10, a*60-10, 20, 20);
+        g.fillOval(a*60-10, (a+6)*60-10, 20, 20);
+        g.fillOval((a+6)*60-10, (a+6)*60-10, 20, 20);
+
+        for(int i = 0;i < 100;i++){
+            if (chessSet.getChess(i) != null) {
+                int temp_x = chessSet.getChess(i).getX() - 25;
+                int temp_y = chessSet.getChess(i).getY() - 25;
+                RadialGradientPaint paint;
+                float[] fractions = new float[]{0.0f,1.0f};
+                Color[] colors_b = new Color[]{Color.WHITE, Color.WHITE};
+                Color[] colors_w = new Color[]{Color.BLACK, Color.BLACK};
+                    if (chessSet.getChess(i).getType() == true) {
+                        paint = new RadialGradientPaint(temp_x, temp_y, 30, fractions, colors_w);
+                    } else {
+                        paint = new RadialGradientPaint(temp_x, temp_y, 30, fractions, colors_b);
+                    }
+                    ((Graphics2D) g).setPaint(paint);
+
+                    ((Graphics2D) g).fillOval(temp_x, temp_y, 50, 50);
+            }
+
+
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        int x=e.getX();
+        int y=e.getY();
+        int bx;
+        int by;
+        if(x % 60 <= 30) {
+            x = x / 60 * 60;
+        }
+        else {
+            x = x / 60 * 60 + 60;
+        }
+        if(y % 60 <= 30) {
+            y = y / 60 * 60;
+        }
+        else {
+            y = y / 60 * 60 + 60;
+        }
+        boolean a = true;
+		for(int i = 0; i < 200; i++){
+			if(chessSet.getChess(i) != null) {
+				if(chessSet.getChess(i).getTF(x,y) == 1) {
+					a = false;
+				}
+			}
+			if(x < 60 || x > 780 || y < 60 || y > 780){
+				a = false;
+			}
+		}
+		if(a == true) {
+	        Chess chessw = new Chess(false,x,y);
+	        chessSet.addChess(chessSet.getChessSet(), chessw);
+	        change = true;
+	        if(gameover(chessSet.getChessSet()) == true){
+	            System.out.println("Gameovergameovergameover");
+	            String winner;
+	            if(change == false)
+	                winner = "黑方";
+	            else
+	                winner = "白方";
+	            String msg=String.format("恭喜，%s获胜", winner);
+	            JOptionPane.showMessageDialog(this, msg);
+	        }
+	        int[] xy = chessSet.bestAi(chessSet);
+	        bx = xy[0];
+	        by = xy[1];
+	        Chess chessb = new Chess(true,bx,by);
+	        chessSet.addChess(chessSet.getChessSet(), chessb);
+	        change = false;
+	        repaint();
+	        if(gameover(chessSet.getChessSet()) == true){
+	            System.out.println("Gameovergameovergameover");
+	            String winner;
+	            if(change == false)
+	                winner = "黑方";
+	            else
+	                winner = "白方";
+	            String msg=String.format("恭喜，%s获胜", winner);
+	            JOptionPane.showMessageDialog(this, msg);
+	        }
+		}
+    }
+        @Override
+        //当用户按下并松开鼠标按钮时发生
+        public void mouseClicked (MouseEvent e){
+            // TODO Auto-generated method stub
+        }
+        @Override
+        public void mouseReleased (MouseEvent e){
+            // TODO Auto-generated method stub
+
+        }
+        @Override
+        public void mouseEntered (MouseEvent e){
+            // TODO Auto-generated method stub
+
+        }
+        @Override
+        public void mouseExited (MouseEvent e){
+            // TODO Auto-generated method stub
+        }
+        public void restartGame(){
+            chessSet.clear(chessSet.getChessSet());
+            repaint();
+        }
+        public void goback(){
+        	int a = chessSet.getChessNumber(chessSet.getChessSet());
+            if(a != 0){
+               chessSet.remove(chessSet.getChessSet());
+               a--;
+               change = !change;
+               repaint();
+            }else{
+                System.out.println("没有棋子。");
+            }
+        }
+        public boolean gameover(Chess[] Chess) {
+        	chessSet.countN(Chess);
+    		boolean a = false;
+	        for (int i = 0; i <100; i++) {
+				if(Chess[i] != null) {
+					if(Chess[i].getN() == 4){
+						a = true;
+					}
+				}
+			}
+			return a;
+        }
+}
