@@ -1,0 +1,309 @@
+
+public class ChessSet {
+	//定义一个棋子的数组
+	private Chess[] chessSet = new Chess[200];
+	
+	//单例模式
+    public ChessSet (){
+    	
+    }  
+	
+	//返回数组
+	public Chess[] getChessSet() {
+		return chessSet;
+	}
+	
+	//返回该数组有几个非空元素
+	public int getChessNumber(Chess[] chessSet) {
+		int a = 0;
+		for (int i = 0; i < 200; i++) {
+			if (chessSet[i] != null) {
+				a = a + 1;
+			}
+		}
+		return a;
+	}
+	
+	//返回该数组中指定位置的棋子
+	public Chess getChess(int number) {
+		return chessSet[number];
+	}
+	
+	//在指定的棋子数组里添加棋子
+	public void addChess(Chess[] addto, Chess addone) {
+		int a = 0;
+		for (int i = 0; i < 100; i++) {
+			if(addto[i] != null) {
+				a = a + 1;
+			}
+		}
+		addto[a] = addone;
+	}
+	
+	//在指定的棋子数组里删除最后一个棋子
+	public void remove(Chess[] removeto){
+        int a = 0;
+        for (int i = 0; i < 100; i++) {
+            if(removeto[i] != null) {
+                a = a + 1;
+            }
+        }
+        removeto[a-1] = null;
+    }
+	
+	//清空指定的棋子数组
+	public void clear(Chess[] clearto) {
+		for (int i = 0; i < 200; i++) {
+			chessSet[i] = null;
+		}
+	}
+	
+	//计算棋子数组中所有棋子周围相同类型的棋子数
+	public void countN (Chess[] Chess) {
+		int number1 = 0;
+		int number2 = 0;
+		int number = 0;
+		int center_x;
+		int center_y;
+		int center_n;
+		boolean center_type;
+		int x;
+		int y;
+		for(int i = 0; i < 100; i++) {
+			number = 0;
+			number1 = 0;
+			number2 = 0;
+			if(Chess[i] != null) {
+				center_x = Chess[i].getX();
+				center_y = Chess[i].getY();
+				center_type = Chess[i].getType();
+				center_n = Chess[i].getN();
+				for(int j = 1; j < 5; j++) {
+					x = center_x - j * 60;
+					y = center_y;
+					for(int k = 0; k < 100; k++) {
+						if(Chess[k] != null) {
+							if(Chess[k].getX() == x && Chess[k].getY() == y 
+									&& Chess[k].getType() == center_type) {
+								number1 = number1 + 1;
+								
+							}
+						}
+					}
+				}
+				for(int j = 1; j < 5; j++) {
+					x = center_x + j * 60;
+					y = center_y;
+					for(int k = 0; k < 100; k++) {
+						if(Chess[k] != null) {
+							if(Chess[k].getX() == x && Chess[k].getY() == y 
+									&& Chess[k].getType() == center_type) {
+								number2 = number2 + 1;
+							}
+						}
+					}
+				}
+				number = number1 + number2;
+				if (center_n < number) {
+					if(Chess[i] != null) {
+						Chess[i].setN(number);
+						System.out.println("chess" + i +"   "+ number+ number1+ number2);
+					}
+				}
+			}
+		}
+		for(int i = 0; i < 100; i++) {
+			number = 0;
+			number1 = 0;
+			number2 = 0;
+			if(Chess[i] != null) {
+				center_x = Chess[i].getX();
+				center_y = Chess[i].getY();
+				center_type = Chess[i].getType();
+				center_n = Chess[i].getN();
+				for(int j = 1; j < 5; j++) {
+					x = center_x;
+					y = center_y - j * 60;
+					for(int k = 0; k < 100; k++) {
+						if(Chess[k] != null) {
+							if(Chess[k].getX() == x && Chess[k].getY() == y 
+									&& Chess[k].getType() == center_type) {
+								number1 = number1 + 1;
+							}
+						}
+					}
+				}
+				for(int j = 1; j < 5; j++) {
+					x = center_x;
+					y = center_y + j * 60;
+					for(int k = 0; k < 100; k++) {
+						if(Chess[k] != null) {
+							if(Chess[k].getX() == x && Chess[k].getY() == y 
+									&& Chess[k].getType() == center_type) {
+								number2 = number2 + 1;
+							}
+						}
+					}
+				}
+				number = number1 + number2;
+				if (center_n < number) {
+					if(Chess[i] != null){
+						Chess[i].setN(number);
+					}
+				}
+			}
+		}
+		for(int i = 0; i < 100; i++) {
+			number = 0;
+			number1 = 0;
+			number2 = 0;
+			if(Chess[i] != null) {
+				center_x = Chess[i].getX();
+				center_y = Chess[i].getY();
+				center_type = Chess[i].getType();
+				center_n = Chess[i].getN();
+				for(int j = 1; j < 5; j++) {
+					x = center_x + j * 60;
+					y = center_y + j * 60;
+					for(int k = 0; k < 100; k++) {
+						if(Chess[k] != null) {
+							if(Chess[k].getX() == x && Chess[k].getY() == y 
+									&& Chess[k].getType() == center_type) {
+								number1 = number1 + 1;
+							}
+						}
+					}
+				}
+				for(int j = 1; j < 5; j++) {
+					x = center_x - j * 60;
+					y = center_y - j * 60;
+					for(int k = 0; k < 100; k++) {
+						if(Chess[k] != null) {
+							if(Chess[k].getX() == x && Chess[k].getY() == y 
+									&& Chess[k].getType() == center_type) {
+								number2 = number2 + 1;
+							}
+						}
+					}
+				}
+				number = number1 + number2;
+				if (center_n < number) {
+					if(Chess[i] != null){
+						Chess[i].setN(number);
+					}
+				}
+			}
+		}
+		for(int i = 0; i < 100; i++) {
+			number = 0;
+			number1 = 0;
+			number2 = 0;
+			if(Chess[i] != null) {
+				center_x = Chess[i].getX();
+				center_y = Chess[i].getY();
+				center_type = Chess[i].getType();
+				center_n = Chess[i].getN();
+				for(int j = 1; j < 5; j++) {
+					x = center_x + j * 60;
+					y = center_y - j * 60;
+					for(int k = 0; k < 100; k++) {
+						if(Chess[k] != null) {
+							if(Chess[k].getX() == x && Chess[k].getY() == y 
+									&& Chess[k].getType() == center_type) {
+								number1 = number1 + 1;
+							}
+						}
+					}
+				}
+				for(int j = 1; j < 5; j++) {
+					x = center_x - j * 60;
+					y = center_y + j * 60;
+					for(int k = 0; k < 100; k++) {
+						if(Chess[k] != null) {
+							if(Chess[k].getX() == x && Chess[k].getY() == y 
+									&& Chess[k].getType() == center_type) {
+								number2 = number2 + 1;
+							}
+						}
+					}
+				}
+				number = number1 + number2;
+				if (center_n < number) {
+					if(Chess[i] != null){
+						Chess[i].setN(number);
+					}
+				}
+			}
+		}
+	}
+	
+	//自己写的机器人
+	public int[] bestAi(ChessSet chessSet) {
+    	int[] bestxy = {0,0};
+    	int[][] xy = new int[1000][1000];
+    	for(int i = 0; i < 1000; i++){
+    		for(int j = 0; i < 1000; i++){
+    			xy[i][j] = 0;
+    		}
+    	}
+		boolean a = true;
+    	for(int i = 0; i < 13; i++){
+    		for(int j = 0; j < 13; j++){
+    			a = true;
+    			for(int k = 0; k < 200; k++){
+    				if(chessSet.getChess(k) != null) {
+    					if(chessSet.getChess(k).getTF(60*i+60,60*j+60) == 1) {
+    						a = false;
+    					}
+    				}	
+    			}
+    			if(a == true) {
+		        	Chess none = new Chess(true, 60*i+60, 60*j+60);
+		        	chessSet.addChess(chessSet.getChessSet(), none);
+		        	chessSet.countN(chessSet.getChessSet());
+		        	xy[60*i+60][60*j+60] = none.getN();
+		        	chessSet.remove(chessSet.getChessSet());
+    			}
+    		}
+    	}
+    	for(int i = 60; i < 1000; i++){
+    		for(int j = 60; j < 1000; j++){
+    			if(xy[i][j] == 4) {
+    				bestxy[0] = i;
+    				bestxy[1] = j;
+    			}
+    		}
+    	}
+    	if(bestxy[0] == 0 && bestxy[1] == 0) {
+    		for(int i = 60; i < 1000; i++){
+        		for(int j = 60; j < 1000; j++){
+        			if(xy[i][j] == 3) {
+        				bestxy[0] = i;
+        				bestxy[1] = j;
+        			}
+        		}
+        	}
+    	}
+    	if(bestxy[0] == 0 && bestxy[1] == 0) {
+    		for(int i = 60; i < 1000; i++){
+        		for(int j = 60; j < 1000; j++){
+        			if(xy[i][j] == 2) {
+        				bestxy[0] = i;
+        				bestxy[1] = j;
+        			}
+        		}
+        	}
+    	}
+    	if(bestxy[0] == 0 && bestxy[1] == 0) {
+    		for(int i = 60; i < 1000; i++){
+        		for(int j = 60; j < 1000; j++){
+        			if(xy[i][j] == 1) {
+        				bestxy[0] = i;
+        				bestxy[1] = j;
+        			}
+        		}
+        	}
+    	}
+    	return bestxy;
+    }
+}
