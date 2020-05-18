@@ -1,0 +1,56 @@
+public class Chess {
+	
+	//定义棋子的类型（黑/白）
+	private boolean type;
+	
+	//定义相应的x，y是否有棋子
+	private int[][] tf = new int[1000][1000];
+	
+	//定义棋子的位置
+	private int x;
+	private int y;
+	
+	//定义棋子周围有几个相同类型的棋子
+	private int n;
+	
+	public Chess(boolean initialType,
+			int initialX, int initialY){
+		type = initialType;
+		x = initialX;
+		y = initialY;
+		n = 0;
+		tf[x][y] = 1;
+	}
+	
+	//返回棋子的黑白属性
+	public boolean getType() {
+		return this.type;
+	}
+	
+	public int getTF(int x, int y) {
+		return tf[x][y];
+	}
+	//改变棋子的黑白属性
+	public void setType() {
+		if(type) {
+			type = false;
+		}
+		else {
+			type = true;
+		}
+	}
+	
+	//返回棋子的位置
+	public int getX() {
+		return this.x;
+	}
+	public int getY() {
+		return this.y;
+	}
+	public int getN() {
+		return n;
+	}
+	public void setN(int a) {
+		n = a;
+	}
+}
