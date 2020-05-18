@@ -1,0 +1,11 @@
+import java.awt.event.MouseEvent;
+
+public interface DrawBoard {    
+	void restartGame();
+	void goback();
+	void mouseClicked(MouseEvent e);
+	boolean gameover(Chess[] Chess);
+	void mousePressed(MouseEvent e);
+	void mouseReleased(MouseEvent e);
+	void mouseEntered(MouseEvent e);
+}
