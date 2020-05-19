@@ -50,12 +50,12 @@ public class DrawBoardRR extends JPanel implements MouseListener, DrawBoard {
                         int temp_y = chessSet.getChess(i).getY() - 25;
                         RadialGradientPaint paint;
                         float[] fractions = new float[]{0f, 1f};
-                        Color[] colors_b = new Color[]{Color.BLACK, Color.WHITE};
+                        Color[] colors_b = new Color[]{Color.LIGHT_GRAY, Color.WHITE};
                         Color[] colors_w = new Color[]{Color.WHITE, Color.BLACK};
                         if (chessSet.getChess(i).getType() == true) {
-                            paint = new RadialGradientPaint(temp_x, temp_y, 10, fractions, colors_w);
+                            paint = new RadialGradientPaint(temp_x+10, temp_y+10, 26, fractions, colors_w);
                         } else {
-                            paint = new RadialGradientPaint(temp_x, temp_y, 10, fractions, colors_b);
+                            paint = new RadialGradientPaint(temp_x+10, temp_y+10, 26, fractions, colors_b);
                         }
                         ((Graphics2D) g).setPaint(paint);
 
